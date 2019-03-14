@@ -4,12 +4,11 @@ class ChatBar extends Component {
   constructor(props) {
     super(props)
 
-    console.log('props:', props)
+    console.log('ChatBar props:', props)
   }
  
 
   newMessage = (event) => {
-    // console.log('event')
     if(event.keyCode == 13) {
       console.log('value', event.target.value);
         const messageInput = event.target.value;
@@ -18,9 +17,7 @@ class ChatBar extends Component {
       }
     }      
 
-  newName = (event) => {
-    // console.log('event')
-    
+  newName = (event) => {    
       console.log('value', event.target.value);
         const nameInput = event.target.value;
         this.props.changeName(nameInput);
@@ -31,7 +28,7 @@ class ChatBar extends Component {
   render() { 
     return (
       <footer className="chatbar">
-          <input className="chatbar-username" defaultValue={ this.props.currentUser.name } onBlur={ this.newName }/>
+          <input className="chatbar-username" defaultValue={ this.props.currentUser } onBlur={ this.newName }/>
           <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyDown={ this.newMessage }/>
       </footer>
     );

@@ -4,14 +4,13 @@ import Message from './Message.jsx';
 class MessageList extends Component {
     constructor(props) {
         super(props)
-
-        // console.log('props:', props);
     }
 
   render() {
     const messageItems = this.props.messages.map((message) => {
         return <Message key={message.id} username={message.username} 
-                        content={message.content} time={message.time}
+            content={message.content} time={message.time}
+            type={message.type}
         />
     });
     return (
@@ -23,10 +22,3 @@ class MessageList extends Component {
 }
 
 export default MessageList;
-
-
-
-
-
-
-
