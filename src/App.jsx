@@ -11,6 +11,7 @@ class App extends Component {
     {
       currentUser: "Bob",
       userCount: 0,
+      // color: 'white',
       // color: {'backgroundColor': 'white'},
       messages: []
       //   {
@@ -43,6 +44,7 @@ class App extends Component {
 
     const newNotification = {
       type: 'postNotification',
+      username: name,
       content: `${this.state.currentUser} has change their name to ${name}.`
     }
       this.setState({ currentUser: name } );
@@ -55,7 +57,7 @@ componentDidMount() {
   console.log('userCount: ', this.state.userCount);
 
     // Create WebSocket connection.
-  this.socket = new WebSocket('ws://localhost:3002');
+  this.socket = new WebSocket('ws://localhost:3001');
 
   // Connection opened
   this.socket.addEventListener('open', (event) => {
@@ -73,6 +75,10 @@ componentDidMount() {
     if (message.type === 'userCount') {
       this.setState({userCount: message.count})
 
+    } else if (message.type === 'user') {
+      console.log('color: ', message.color);
+      this.setState({ color: message.color });
+
     } else {
     
       console.log('Message from server ', event.data);
@@ -88,7 +94,7 @@ componentDidMount() {
       <div>
 
         <NavBar userCount={ this.state.userCount }/>
-        <MessageList messages={ this.state.messages } />
+        <MessageList messages={ this.state.messages } color={this.state.color}/>
         <ChatBar currentUser={ this.state.currentUser }  addMessage={ this.addMessage } changeName={ this.changeName }/>
         
       </div>

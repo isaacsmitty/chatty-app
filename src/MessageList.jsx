@@ -7,15 +7,23 @@ class MessageList extends Component {
     }
 
   render() {
-    const messageItems = this.props.messages.map((message) => {
-        return <Message key={message.id} username={message.username} 
-            content={message.content} time={message.time}
-            type={message.type}
-        />
-    });
+    // const { color, messages } = this.props;
+    // // const  messageItems = this.props.messages.map((message) => {
+    // //     return <Message key={message.id} username={message.username} 
+    // //         content={message.content} time={message.time}
+    // //         type={message.type} color={colour}
+    // //     />
+    // // });
     return (
         <div>
-            { messageItems }
+            {this.props.messages.map((message) => {
+                return (
+                <Message key={message.id} username={message.username} 
+                    content={message.content} time={message.time}
+                    type={message.type} color={message.color}
+                />
+                )
+                })}
         </div>
     );  
   }

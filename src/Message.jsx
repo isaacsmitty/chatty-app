@@ -11,8 +11,8 @@ class Message extends Component {
         <main className="messages">
         {this.props.type === 'incomingMessage' ? (
             <div className="message">
-                <span className="message-username" >{ this.props.username }</span>
-                <span className="message-content" >{ this.props.content } </span>
+                <span className="message-username" style={ {color: this.props.color} }>{ this.props.username }</span>
+                <span className="message-content" style={ {color: this.props.color} }>{ this.props.content } </span>
                 <span className="message-time" >{ this.props.time}</span>
             </div>)  
             :  (
