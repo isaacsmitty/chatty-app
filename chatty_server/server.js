@@ -6,7 +6,7 @@ const uuidv1 = require ('uuid/v1');
 const moment = require ('moment-timezone');
 
 // Set the port to 3002
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Create a new express server
 const server = express()
