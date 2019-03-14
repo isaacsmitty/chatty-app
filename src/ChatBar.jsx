@@ -6,31 +6,33 @@ class ChatBar extends Component {
 
     console.log('props:', props)
   }
-  // onKeyDown = () => {
-    
-  // } 
+ 
 
   newMessage = (event) => {
+    // console.log('event')
     if(event.keyCode == 13) {
       console.log('value', event.target.value);
-        // event.preventDefault();
         const messageInput = event.target.value;
-  
         this.props.addMessage(messageInput);
-  
         event.target.value = "";
       }
     }      
 
-  render() {
+  newName = (event) => {
+    // console.log('event')
+    
+      console.log('value', event.target.value);
+        const nameInput = event.target.value;
+        this.props.changeName(nameInput);
+        // event.target.value = "";
+      }
+       
+
+  render() { 
     return (
       <footer className="chatbar">
-        
-          <input className="chatbar-username" placeholder={ this.props.currentUser.name } />
-
-         
+          <input className="chatbar-username" defaultValue={ this.props.currentUser.name } onBlur={ this.newName }/>
           <input className="chatbar-message" placeholder="Type a message and hit ENTER" onKeyDown={ this.newMessage }/>
-        
       </footer>
     );
   }
