@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 const server = express()
    // Make the express server serve static assets (html, javascript, css) from the /public folder
   .use(express.static('public'))
-  .listen(PORT, '0.0.0.0', 'localhost', () => console.log(`Listening on ${ PORT }`));
+  .listen(PORT, '0.0.0.0', () => console.log(`Listening on ${ PORT }`));
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
@@ -25,9 +25,9 @@ let id = 0;
 wss.on('connection', (ws) => {
   console.log('Clients connected:', wss.clients.size);
   ws.id = id++;
-  console.log('ws id: ', ws.id);
+//   console.log('ws id: ', ws.id);
   ws.color = ('#' + parseInt(Math.random() * 0xffffff).toString(16));
-  console.log('ws color: ', ws.color);
+//   console.log('ws color: ', ws.color);
   wss.clients.forEach(function each(client) {
   const message = {
       type: 'incomingNotification',
@@ -56,25 +56,43 @@ wss.on('connection', (ws) => {
 
       message = JSON.parse(message)
       ws.name = message.username;
-      console.log(ws.name);
+    //   console.log(ws.name);
+
+    
+
+    if (message.type === 'postMessage' && message.content.match(/(gif|png|jpg|jpeg)$/)) {
+        // console.log('regex match: ', message.content);
+        message.type = 'incomingImage';
+        message.color = ws.color;    
+        message.id = uuidv1();
+        message.time = moment().tz("America/New_York").format("ddd @ h:mm a");
+
+        wss.clients.forEach(function each(client) {
+            client.send(
+            JSON.stringify(message)
+            );
+        });
+    }
 
     if (message.type === 'postMessage') {
 
-      message.type = 'incomingMessage';
-      message.color = ws.color;    
-      message.id = uuidv1();
-      message.time = moment().tz("America/New_York").format("MMMM Do @ h:mm a");
-      
+        message.type = 'incomingMessage';
+        message.color = ws.color;    
+        message.id = uuidv1();
+        message.time = moment().tz("America/New_York").format("ddd @ h:mm a");
+    
 
-      console.log(`User ${message.username} says '${message.content}'`);
-      console.log(message);
+//   console.log(`User ${message.username} says '${message.content}'`);
+//   console.log(message);
 
-      wss.clients.forEach(function each(client) {
+    wss.clients.forEach(function each(client) {
         client.send(
-          JSON.stringify(message)
+        JSON.stringify(message)
         );
-      });
-    } else if (message.type === 'postNotification') {
+    });
+    } else {
+    
+    (message.type === 'postNotification') 
          
       message.type = 'incomingNotification';  
     //   message.id = uuidv1();
@@ -89,25 +107,23 @@ wss.on('connection', (ws) => {
         );
       });
     }
-  });
-    
-
+  
     
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => {console.log('Clients connected:', wss.clients.size);
-  if (ws.name) {
-      wss.clients.forEach(function each(client) {
-        const message = {
-        type: 'incomingNotification',
-        content: `${ws.name} has left..`
-      }
-      if (client !== ws) {
-      client.send(
-          JSON.stringify(message)
-      );
-      }
-      });
-    }
+     ws.on('close', () => {console.log('Clients connected:', wss.clients.size);
+        if (ws.name) {
+            wss.clients.forEach(function each(client) {
+                const message = {
+                type: 'incomingNotification',
+                content: `${ws.name} has left..`
+            }
+        if (client !== ws) {
+        client.send(
+            JSON.stringify(message)
+            );
+        } 
+            });
+        }   
     });
 });
-
+})
