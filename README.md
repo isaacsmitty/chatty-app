@@ -3,9 +3,9 @@
 **Chatty** is a simple, single-page Slack-esque web app.
 Front end is built with React and Webpack. Back end is handled with Node, Express and WebSockets(ws).
 
-Message wiht other people in real time. You can change your handle when ever you like, but everyone will be notified.
+Message with other people in real time. You can change your handle when ever you like, but everyone will be notified.
 
-You can see when others join the caht or changed their name. You are also notified when users leave if they have already posted something.
+You can see when others join the chat or change their name. You are also notified when users leave if they have already posted something.
 
 The number of online users is diplayed, so you know how many people you are chatting with.
 
