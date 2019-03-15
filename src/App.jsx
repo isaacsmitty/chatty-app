@@ -11,24 +11,11 @@ class App extends Component {
     {
       currentUser: "Bob",
       userCount: 0,
-      // color: 'white',
-      // color: {'backgroundColor': 'white'},
+      emojiShown: false,
       messages: []
-      //   {
-      //     id: 1,
-      //     username: "Bob",
-      //     content: "Has anyone seen my marbles?",
-      //   },
-      //   {
-      //     id: 2,
-      //     username: "Anonymous",
-      //     content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-      //   }
-      // ]
     }
   }
   
-
   addMessage = (message) => {
 
     const newMessage = {
@@ -37,7 +24,6 @@ class App extends Component {
       content: message
     }
     this.socket.send(JSON.stringify(newMessage));
-    // this.setState({ messages: [...this.state.messages, newMessage] });
   }
 
   changeName = (name) => {
@@ -52,12 +38,16 @@ class App extends Component {
     this.socket.send(JSON.stringify(newNotification));
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
 componentDidMount() {
   console.log("componentDidMount <App />");
   console.log('userCount: ', this.state.userCount);
 
     // Create WebSocket connection.
-  this.socket = new WebSocket('ws://localhost:3001');
+  this.socket = new WebSocket('ws://0.0.0.0:3001');
 
   // Connection opened
   this.socket.addEventListener('open', (event) => {
@@ -75,18 +65,19 @@ componentDidMount() {
     if (message.type === 'userCount') {
       this.setState({userCount: message.count})
 
-    } else if (message.type === 'user') {
-      console.log('color: ', message.color);
-      this.setState({ color: message.color });
+    } else if (message.type === 'incomingImage') {
+      this.setState({ messages: [...this.state.messages, message] }); 
 
     } else {
     
       console.log('Message from server ', event.data);
       this.setState({ messages: [...this.state.messages, message] });
-    }
-    
+    }  
   });
-  
+}
+
+componentDidUpdate() {
+  this.scrollToBottom();
 }
 
   render() {
@@ -95,7 +86,10 @@ componentDidMount() {
 
         <NavBar userCount={ this.state.userCount }/>
         <MessageList messages={ this.state.messages } color={this.state.color}/>
-        <ChatBar currentUser={ this.state.currentUser }  addMessage={ this.addMessage } changeName={ this.changeName }/>
+          <div style={{ float:"left", clear: "both" }}
+              ref={(el) => { this.messagesEnd = el; }}>
+          </div>
+        <ChatBar currentUser={ this.state.currentUser }  addMessage={ this.addMessage } changeName={ this.changeName } emojiShown={ this.state.emojiShown }/>
         
       </div>
     );

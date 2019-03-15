@@ -8,8 +8,6 @@ class NavBar extends Component {
         console.log('NavBar props:', props)  
     }
 
-    
-
     render() { 
         return (
             <nav className="navbar">

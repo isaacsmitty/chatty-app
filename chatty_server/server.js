@@ -41,7 +41,7 @@ wss.on('connection', (ws) => {
     });
 
   wss.clients.forEach(function each(client) {
-    // if (client.readyState === WebSocket.OPEN) {
+    
       const message = {
           type: 'userCount',
           count: wss.clients.size
@@ -81,7 +81,6 @@ wss.on('connection', (ws) => {
         message.id = uuidv1();
         message.time = moment().tz("America/New_York").format("ddd @ h:mm a");
     
-
 //   console.log(`User ${message.username} says '${message.content}'`);
 //   console.log(message);
 
@@ -95,11 +94,9 @@ wss.on('connection', (ws) => {
     (message.type === 'postNotification') 
          
       message.type = 'incomingNotification';  
-    //   message.id = uuidv1();
-    //   message.time = moment().tz("America/New_York").format("MMMM Do @ h:mm a");
 
-      console.log(`User ${message.username} says '${message.content}'`);
-      console.log(message);
+    //   console.log(`User ${message.username} says '${message.content}'`);
+    //   console.log(message);
 
       wss.clients.forEach(function each(client) {
         client.send(
