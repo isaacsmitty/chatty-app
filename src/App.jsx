@@ -77,7 +77,7 @@ componentDidMount() {
 }
 
 componentDidUpdate() {
-  this.scrollToBottom();
+   this.scrollToBottom();
 }
 
   render() {
